@@ -1,4 +1,31 @@
 table {
     width: 100%;
   }
-  
+
+
+  a:hover {
+    cursor: pointer;
+  }
+
+
+  .modal-header {
+    padding: 0;
+  }
+
+
+  button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    margin-left: auto;
+}
+
+.modal-header{
+  border-bottom: none;
+}
+
+
+.mat-dialog-title {
+  display: flex;
+}

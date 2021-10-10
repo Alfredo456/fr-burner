@@ -1,0 +1,20 @@
+<div class="modal-header" mat-dialog-title>
+  <!-- <h6 class="modal-title">Envio de Correo</h6> -->
+  <button type="button" mat-dialog-close class="close" data-dismiss="modal" aria-label="Close" (click)="onNoClick()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div class="container">
+    <form class="row">
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Correo Electrónico</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="col-12">
+        <button type="button" class="btn btn-primary mb-3" (click)="validate()">Enviar</button>
+      </div>
+      {{serchfind}}
+    </form>
+  </div>
+</div>
