@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dialog-content-example-dialog',
@@ -8,8 +9,6 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./app.component.scss'],
 })
 export class DialogContentExampleDialogComponent implements OnInit {
-  email: string;
-  serchfind: any;
   constructor(
     public dialogRef: MatDialogRef<DialogContentExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -17,9 +16,8 @@ export class DialogContentExampleDialogComponent implements OnInit {
     private renderer: Renderer2,
     private readonly changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone
-  ) {
-    this.email = '';
-  }
+  ) {}
+  email = new FormControl('', [Validators.required, Validators.email]);
 
   ngOnInit(): void {}
   onNoClick(): void {
@@ -28,12 +26,18 @@ export class DialogContentExampleDialogComponent implements OnInit {
     });
   }
   validate(): void {
-    const regexp = new RegExp(
-      /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-    );
+    console.log(this.data);
+    if (this.email.valid) {
+      console.log('bien');
+    } else {
+    }
+  }
 
-    this.serchfind = regexp.test(this.email);
+  getErrorMessage(): string {
+    if (this.email.hasError('required')) {
+      return 'Debe ingresar un correo';
+    }
 
-    console.log(this.serchfind);
+    return this.email.hasError('email') ? 'Este no es un correo valido' : '';
   }
 }

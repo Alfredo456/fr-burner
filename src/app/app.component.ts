@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
 import { DialogContentExampleDialogComponent } from './dialogExample.component';
 
 export interface StudyElement {
@@ -44,34 +45,51 @@ const ELEMENT_DATA: StudyElement[] = [
 export class AppComponent implements OnInit {
   displayedColumns: string[] = ['idStudy', 'studyDescription', 'patientName', 'options'];
   dataSource = new MatTableDataSource<StudyElement>();
-  //@ViewChild(MatPaginator) paginator: MatPaginator;
-  //@ViewChild(MatSort) sort: MatSort;
-  //@ViewChild(MatPaginator) paginator: MatPaginator;
-  //@ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true })
   paginator!: MatPaginator;
   resultsLength: number;
 
   constructor(public dialog: MatDialog) {
     this.resultsLength = 0;
-    //this.paginator = new MatPaginator();
+    // this.paginator = new MatPaginator();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataSource.data = ELEMENT_DATA;
     this.resultsLength = this.dataSource.data.length;
     this.dataSource.paginator = this.paginator ? this.paginator : null;
-    //this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    // this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
 
-  openDialog(data: StudyElement) {
+  openDialog(data: StudyElement): void {
     this.dialog.open(DialogContentExampleDialogComponent, {
-      data: data,
+      data,
     });
   }
 
-  modalEmail(row: any) {
+  modalEmail(row: any): void {
     this.openDialog(row);
   }
-  upload() {}
+  upload(): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this imaginary file!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Deleted!', 'Your imaginary file has been deleted.', 'success');
+        // For more information about handling dismissals please visit
+        // https://sweetalert2.github.io/#handling-dismissals
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
+      }
+    });
+  }
 }
