@@ -4,21 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './material-module';
-import {DialogContentExampleDialogComponent} from './dialogExample.component';
-import {FormsModule} from '@angular/forms';
+import { DialogContentExampleDialogComponent } from './dialogExample.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DialogContentExampleDialogComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    DemoMaterialModule,
-    FormsModule
-  ],
+  declarations: [AppComponent, DialogContentExampleDialogComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, DemoMaterialModule, FormsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

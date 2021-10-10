@@ -9,7 +9,14 @@
     <form class="row">
       <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Correo Electrónico</label>
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+        <input
+          type="email"
+          class="form-control"
+          id="exampleFormControlInput1"
+          placeholder="name@example.com"
+          [(ngModel)]="email"
+          [ngModelOptions]="{standalone: true}"
+        />
       </div>
       <div class="col-12">
         <button type="button" class="btn btn-primary mb-3" (click)="validate()">Enviar</button>
