@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { DialogContentExampleDialogComponent } from './dialogExample.component';
+import {AppService} from './app.service';
 
 export interface StudyElement {
   idStudy: string;
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit {
   paginator!: MatPaginator;
   resultsLength: number;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private appService: AppService) {
     this.resultsLength = 0;
     // this.paginator = new MatPaginator();
   }
@@ -63,6 +64,16 @@ export class AppComponent implements OnInit {
     this.resultsLength = this.dataSource.data.length;
     this.dataSource.paginator = this.paginator ? this.paginator : null;
     // this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.getList();
+  }
+
+  getList(): void {
+    this.appService.getAllStudies().subscribe(x => {
+      console.log(x);
+      setTimeout(() => {
+        this.getList();
+      }, 100000);
+    });
   }
 
   openDialog(data: StudyElement): void {
