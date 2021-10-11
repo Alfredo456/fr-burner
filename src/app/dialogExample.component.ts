@@ -28,7 +28,8 @@ export class DialogContentExampleDialogComponent implements OnInit {
   validate(): void {
     console.log(this.data);
     if (this.email.valid) {
-      console.log('bien');
+      // ToDo agregar servicio del correo
+      // fr-burner
     } else {
     }
   }
