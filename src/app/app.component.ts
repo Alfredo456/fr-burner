@@ -14,6 +14,13 @@ export interface StudyElement {
   isBurned: boolean;
 }
 
+export interface StudyElement2 {
+  idStudy: string;
+  studyDescription: string;
+  patientName: string;
+  patientId: string;
+}
+
 const ELEMENT_DATA: StudyElement[] = [
   { idStudy: '1', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', isBurned: true },
   { idStudy: '2', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', isBurned: true },
@@ -38,6 +45,10 @@ const ELEMENT_DATA: StudyElement[] = [
   { idStudy: '20', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', isBurned: true },
 ];
 
+const ELEMENT_DATA2: StudyElement2[] = [
+  { idStudy: '1', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+];
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -45,8 +56,9 @@ const ELEMENT_DATA: StudyElement[] = [
 })
 export class AppComponent implements OnInit {
   displayedColumns: string[] = ['idStudy', 'studyDescription', 'patientName', 'options'];
+  displayedColumns2: string[] = ['idStudy', 'studyDescription', 'patientName', 'patientId', 'options'];
   dataSource = new MatTableDataSource<StudyElement>();
-  dataSource2 = new MatTableDataSource<StudyElement>();
+  dataSource2 = new MatTableDataSource<StudyElement2>();
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -67,7 +79,7 @@ export class AppComponent implements OnInit {
     this.resultsLength = this.dataSource.data.length;
     this.dataSource.paginator = this.paginator ? this.paginator : null;
 
-    this.dataSource2.data = ELEMENT_DATA;
+    this.dataSource2.data = ELEMENT_DATA2;
     this.resultsLength2 = this.dataSource2.data.length;
     this.dataSource2.paginator = this.paginator ? this.paginator : null;
     // this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -78,6 +90,9 @@ export class AppComponent implements OnInit {
   getList(): void {
     this.appService.getFailStudies().subscribe(x => {
       console.log(x);
+      this.dataSource.data = x;
+      this.resultsLength = this.dataSource.data.length;
+      this.dataSource.paginator = this.paginator ? this.paginator : null;
       setTimeout(() => {
         this.getList();
       }, 100000);
@@ -87,6 +102,22 @@ export class AppComponent implements OnInit {
   getCompleteList(): void {
     this.appService.getAllStudies().subscribe(x => {
       console.log(x);
+      if (x && x.length > 0) {
+        const newData: any[] = [];
+        x.forEach((study: any) => {
+          newData.push(
+            {
+              idStudy: study.ID,
+              studyDescription:  study.MainDicomTags.StudyDescription,
+              patientName:  study.PatientMainDicomTags.PatientName,
+              patientId: study.PatientMainDicomTags.PatientID,
+            }
+          );
+        } );
+        this.dataSource2.data = newData;
+        this.resultsLength2 = this.dataSource2.data.length;
+        this.dataSource2.paginator = this.paginator ? this.paginator : null;
+      }
       setTimeout(() => {
         this.getCompleteList();
       }, 100000);
