@@ -17,8 +17,11 @@ export const httpOptions = {
 export class AppService {
   constructor(private httpClient: HttpClient) {}
 
-  getAllStudies(): Observable<any> {
+  getFailStudies(): Observable<any> {
     return this.httpClient.get( environment.endpoint + '/reBurn/pending/studies', httpOptions);
+  }
+  getAllStudies(): Observable<any> {
+    return this.httpClient.get( environment.endpoint + '/info/study/studies', httpOptions);
   }
 
   burnDisk(payload: any): Observable<any> {

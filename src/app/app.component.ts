@@ -46,6 +46,7 @@ const ELEMENT_DATA: StudyElement[] = [
 export class AppComponent implements OnInit {
   displayedColumns: string[] = ['idStudy', 'studyDescription', 'patientName', 'options'];
   dataSource = new MatTableDataSource<StudyElement>();
+  dataSource2 = new MatTableDataSource<StudyElement>();
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -53,9 +54,11 @@ export class AppComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true })
   paginator!: MatPaginator;
   resultsLength: number;
+  resultsLength2: number;
 
   constructor(public dialog: MatDialog, private appService: AppService) {
     this.resultsLength = 0;
+    this.resultsLength2 = 0;
     // this.paginator = new MatPaginator();
   }
 
@@ -63,15 +66,29 @@ export class AppComponent implements OnInit {
     this.dataSource.data = ELEMENT_DATA;
     this.resultsLength = this.dataSource.data.length;
     this.dataSource.paginator = this.paginator ? this.paginator : null;
+
+    this.dataSource2.data = ELEMENT_DATA;
+    this.resultsLength2 = this.dataSource2.data.length;
+    this.dataSource2.paginator = this.paginator ? this.paginator : null;
     // this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
     this.getList();
+    this.getCompleteList();
   }
 
   getList(): void {
-    this.appService.getAllStudies().subscribe(x => {
+    this.appService.getFailStudies().subscribe(x => {
       console.log(x);
       setTimeout(() => {
         this.getList();
+      }, 100000);
+    });
+  }
+
+  getCompleteList(): void {
+    this.appService.getAllStudies().subscribe(x => {
+      console.log(x);
+      setTimeout(() => {
+        this.getCompleteList();
       }, 100000);
     });
   }
