@@ -18,7 +18,14 @@ export class AppService {
   constructor(private httpClient: HttpClient) {}
 
   getAllStudies(): Observable<any> {
-    const step = 100;
     return this.httpClient.get( environment.endpoint + '/reBurn/pending/studies', httpOptions);
+  }
+
+  burnDisk(payload: any): Observable<any> {
+    return this.httpClient.post( environment.endpoint + '/handler/burn', payload, httpOptions);
+  }
+
+  sendMail(payload: any): Observable<any> {
+    return this.httpClient.post( environment.endpoint + '/results/mail', payload, httpOptions);
   }
 }

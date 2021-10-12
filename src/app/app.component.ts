@@ -85,21 +85,25 @@ export class AppComponent implements OnInit {
   modalEmail(row: any): void {
     this.openDialog(row);
   }
-  upload(): void {
+  burnDisk(row: any): void {
+    const payload = {
+      idStudy: row.idStudy
+    };
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this imaginary file!',
+      title: '¿Estas seguro que deseas grabar el disco?',
+      text: '¡Al enviar a grabar no podras cancelar el proceso!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
+      confirmButtonText: 'Si, grabar!',
+      cancelButtonText: 'No, salir',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Deleted!', 'Your imaginary file has been deleted.', 'success');
-        // For more information about handling dismissals please visit
-        // https://sweetalert2.github.io/#handling-dismissals
+        Swal.fire('Petición Enviada', 'Estudio en proceso de grabacion', 'success');
+        this.appService.burnDisk(payload).subscribe(x => {
+          Swal.fire(x.code, x.message);
+        });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
+        Swal.fire('Cancelado', 'El estudio no sera grabado en disco :)', 'error');
       }
     });
   }

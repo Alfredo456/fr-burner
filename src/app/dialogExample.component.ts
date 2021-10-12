@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, Inject, NgZone, OnInit, Rende
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl, Validators } from '@angular/forms';
+import {AppService} from './app.service';
 
 @Component({
   selector: 'app-dialog-content-example-dialog',
@@ -15,7 +16,8 @@ export class DialogContentExampleDialogComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private renderer: Renderer2,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private appService: AppService
   ) {}
   email = new FormControl('', [Validators.required, Validators.email]);
 
@@ -27,9 +29,13 @@ export class DialogContentExampleDialogComponent implements OnInit {
   }
   validate(): void {
     console.log(this.data);
+    const payload = {
+      idStudy: this.data.idStudy,
+      emailAddress: this.email.value
+    };
     if (this.email.valid) {
-      // ToDo agregar servicio del correo
-      // fr-burner
+      this.appService.sendMail(payload).subscribe(x => {
+      });
     } else {
     }
   }
