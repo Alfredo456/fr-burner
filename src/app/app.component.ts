@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -47,6 +47,18 @@ const ELEMENT_DATA: StudyElement[] = [
 
 const ELEMENT_DATA2: StudyElement2[] = [
   { idStudy: '1', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '2', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '3', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '4', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '5', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '6', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '7', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '8', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '9', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '10', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '11', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '12', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
+  { idStudy: '13', studyDescription: 'Patologias varias', patientName: 'Alfredo Cañizales', patientId: '56465654645' },
 ];
 
 @Component({
@@ -54,7 +66,7 @@ const ELEMENT_DATA2: StudyElement2[] = [
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['idStudy', 'studyDescription', 'patientName', 'options'];
   displayedColumns2: string[] = ['idStudy', 'studyDescription', 'patientName', 'patientId', 'options'];
   dataSource = new MatTableDataSource<StudyElement>();
@@ -63,8 +75,10 @@ export class AppComponent implements OnInit {
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true })
-  paginator!: MatPaginator;
+    // @ts-ignore
+  @ViewChild('paginator1') paginator: MatPaginator;
+      // @ts-ignore
+  @ViewChild('paginator2') paginator2: MatPaginator;
   resultsLength: number;
   resultsLength2: number;
 
@@ -75,13 +89,16 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource.data = ELEMENT_DATA;
+  }
+
+  ngAfterViewInit() {
+    this.dataSource = new MatTableDataSource<StudyElement>(ELEMENT_DATA);
     this.resultsLength = this.dataSource.data.length;
     this.dataSource.paginator = this.paginator ? this.paginator : null;
 
-    this.dataSource2.data = ELEMENT_DATA2;
+    this.dataSource2 = new MatTableDataSource<StudyElement2>(ELEMENT_DATA2);
     this.resultsLength2 = this.dataSource2.data.length;
-    this.dataSource2.paginator = this.paginator ? this.paginator : null;
+    this.dataSource2.paginator = this.paginator2 ? this.paginator2 : null;
     // this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
     this.getList();
     this.getCompleteList();
@@ -90,7 +107,7 @@ export class AppComponent implements OnInit {
   getList(): void {
     this.appService.getFailStudies().subscribe(x => {
       console.log(x);
-      this.dataSource.data = x;
+      this.dataSource = new MatTableDataSource<StudyElement>(x);
       this.resultsLength = this.dataSource.data.length;
       this.dataSource.paginator = this.paginator ? this.paginator : null;
       setTimeout(() => {
@@ -114,9 +131,9 @@ export class AppComponent implements OnInit {
             }
           );
         } );
-        this.dataSource2.data = newData;
+        this.dataSource2 = new MatTableDataSource<StudyElement2>(newData);
         this.resultsLength2 = this.dataSource2.data.length;
-        this.dataSource2.paginator = this.paginator ? this.paginator : null;
+        this.dataSource2.paginator = this.paginator2 ? this.paginator2 : null;
       }
       setTimeout(() => {
         this.getCompleteList();
